@@ -11,7 +11,7 @@ import subprocess
 import shutil
 
 # Add edm_base to path
-sys.path.append(os.path.join(os.path.dirname(__file__), 'edm_base'))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), 'edm_base')))
 
 import dnnlib
 from torch_utils import distributed as dist
