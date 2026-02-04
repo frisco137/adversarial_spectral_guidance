@@ -1,17 +1,11 @@
-# Models (Large files)
-models/
-*.pkl
-*.pt
-*.npz
 
-# Outputs
-experiment_out/
-*.png
-spectral_profile.npy
-
-# Python
 __pycache__/
-*.py[cod]
-
-# System
+*.pyc
+*.npy
+*.png
+*.jpg
+*.pkl
+models/
+edm_base/
+experiment_out/
 .DS_Store
