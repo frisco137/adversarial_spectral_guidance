@@ -52,12 +52,12 @@ def generate_samples(net, outdir, num_samples, batch_size, num_steps, guidance_s
 
 def compute_fid(images_dir, ref_path):
     print(f"Computing FID for {images_dir}...")
-    # Using python -m style or direct path
-    fid_script = os.path.join('edm_base', 'fid.py')
+    # Using patched fid script in root
+    fid_script = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fid_patched.py')
     
     # Check if fid script exists
     if not os.path.exists(fid_script):
-        print("Error: fid.py not found in edm_base.")
+        print("Error: fid_patched.py not found.")
         return None
         
     cmd = [

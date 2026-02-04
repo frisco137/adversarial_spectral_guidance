@@ -24,11 +24,28 @@ def spectral_guidance_sampler(
     if os.path.exists(profile_path):
         try:
             spectral_profile = np.load(profile_path)
-            # Ensure shape matches num_steps? 
-            # If profile has different steps, we might need interpolation or error.
-            # Assuming profile was generated with same num_steps.
-            if spectral_profile.shape[0] != num_steps:
-                print(f"Warning: Spectral profile steps ({spectral_profile.shape[0]}) != num_steps ({num_steps}). Guidance may be misaligned.")
+            # Interpolation/Resampling logic
+            prof_steps = spectral_profile.shape[0]
+            if prof_steps != num_steps:
+                print(f"Resamping spectral profile from {prof_steps} to {num_steps} steps.")
+                # Interpolate
+                # We want to map current step i in [0, num_steps-1] to [0, prof_steps-1]
+                # using linear interpolation.
+                new_profile = []
+                orig_indices = np.linspace(0, prof_steps - 1, num_steps)
+                
+                for idx in orig_indices:
+                    low = int(np.floor(idx))
+                    high = int(np.ceil(idx))
+                    alpha = idx - low
+                    
+                    vec_low = spectral_profile[low]
+                    vec_high = spectral_profile[high]
+                    vec_interp = vec_low * (1 - alpha) + vec_high * alpha
+                    new_profile.append(vec_interp)
+                
+                spectral_profile = np.stack(new_profile)
+                
         except Exception as e:
             print(f"Error loading spectral profile: {e}")
     else:
